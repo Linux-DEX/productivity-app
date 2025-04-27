@@ -28,16 +28,22 @@ body {
 
 :root {
   --color-primary: #2563eb;
+  --color-secondary: #2314f7;
   --color-background: #cad3f5;
 }
 
 [data-theme="dark"] {
   --color-primary: #3b82f6;
+  --color-secondary: #2314f7;
   --color-background: #181926;
 }
 
 .bg-primary {
   background-color: var(--color-primary);
+}
+
+.bg-secondary {
+  background-color: var(--color-secondary);
 }
 
 .text-primary {

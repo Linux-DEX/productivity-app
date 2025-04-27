@@ -1,16 +1,19 @@
 "use client";
 
 import { SidebarContext } from "@/context/sidebarContext";
-import { useContext } from "react";
+import React, { useContext } from "react";
+import { LucideIcon } from "lucide-react";
 
 interface SidebarItemProps {
   text: string;
+  icon: React.ReactNode;
   active?: boolean;
   alert?: boolean;
 }
 
 export default function SidebarItem({
   text,
+  icon,
   active = false,
   alert = false,
 }: SidebarItemProps) {
@@ -35,7 +38,8 @@ export default function SidebarItem({
         }
     `}
     >
-      <span>icon</span>
+      {/* <span>icon</span> */}
+      <span>{ icon }</span>
       <span
         className={`overflow-hidden transition-all ${
           expanded ? "w-52 ml-3" : "w-0"

@@ -4,6 +4,7 @@ import { useContext, ReactNode, useEffect, useState } from "react";
 import { SidebarContext } from "@/context/sidebarContext";
 import { useTheme } from "next-themes";
 import ThemeSwitch from "./themeButton";
+import { ChevronsLeft, ChevronsRight } from "lucide-react";
 
 interface SidebarProps {
   children: ReactNode;
@@ -22,18 +23,29 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
     <aside className="h-screen">
       <nav className="h-full inline-flex flex-col bg-background border-r shadow-sm">
         <div className="p-4 pb-2 flex justify-between items-center">
-          <img
+          {/* <img
             src="https://img.logoipsum.com/243.svg"
             className={`overflow-hidden transition-all ${
               expanded ? "w-32" : "w-0"
             }`}
             alt=""
-          />
+          /> */}
+          <p
+            className={`text-xl overflow-hidden transition-all ${
+              expanded ? "w-32" : "w-0"
+            }`}
+          >
+            Linux-DEX
+          </p>
           <button
             onClick={() => setExpanded((curr) => !curr)}
-            className="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100 "
+            className="p-1.5 rounded-lg bg-background"
           >
-            {expanded ? <span>close</span> : <span>open</span>}
+            {expanded ? (
+              <ChevronsLeft className="transition-all duration-300 ease-in-out transform hover:scale-125" />
+            ) : (
+              <ChevronsRight className="transition-all duration-300  ease-in-out transform hover:scale-125" />
+            )}
           </button>
         </div>
 

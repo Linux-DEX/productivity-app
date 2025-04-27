@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
+import { Sun, Moon } from "lucide-react";
 
 export default function ThemeSwitch() {
   const [mounted, setMounted] = useState(false);
@@ -27,9 +28,9 @@ export default function ThemeSwitch() {
   return (
     <button
       onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-      className="p-2 rounded bg-primary text-white transition-all duration-300"
+      className="p-2 rounded bg-secondary text-white transition-all duration-300"
     >
-      {theme === "light" ? "Dark" : "Light"}
+      {theme === "light" ? <Moon /> : <Sun />}
     </button>
   );
 }
