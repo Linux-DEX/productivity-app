@@ -1,10 +1,9 @@
 "use client";
 
-import { useContext, ReactNode, useEffect, useState } from "react";
+import { useContext, ReactNode } from "react";
 import { SidebarContext } from "@/context/sidebarContext";
-import { useTheme } from "next-themes";
-import ThemeSwitch from "./themeButton";
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
+import ThemeSwitch from "./themeButton";
 
 interface SidebarProps {
   children: ReactNode;
@@ -21,55 +20,60 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
 
   return (
     <aside className="h-screen">
-      <nav className="h-full inline-flex flex-col bg-background border-r shadow-sm">
+      <nav
+        className="h-full inline-flex flex-col shadow-sm"
+        style={{
+          backgroundColor: "var(--color-surface)",
+          borderRight: "1px solid var(--color-border)",
+        }}
+      >
         <div className="p-4 pb-2 flex justify-between items-center">
-          {/* <img
-            src="https://img.logoipsum.com/243.svg"
-            className={`overflow-hidden transition-all ${
-              expanded ? "w-32" : "w-0"
-            }`}
-            alt=""
-          /> */}
           <p
-            className={`text-xl overflow-hidden transition-all ${
+            className={`text-xl font-bold text-primary-text overflow-hidden transition-all ${
               expanded ? "w-32" : "w-0"
             }`}
           >
-            Linux-DEX
+            DEX
           </p>
           <button
             onClick={() => setExpanded((curr) => !curr)}
-            className="p-1.5 rounded-lg bg-background"
+            className="p-1.5 rounded-lg"
+            style={{ backgroundColor: "var(--color-surface)" }}
           >
             {expanded ? (
-              <ChevronsLeft className="transition-all duration-300 ease-in-out transform hover:scale-125" />
+              <ChevronsLeft className="transition-transform duration-300 hover:scale-125" />
             ) : (
-              <ChevronsRight className="transition-all duration-300  ease-in-out transform hover:scale-125" />
+              <ChevronsRight className="transition-transform duration-300 hover:scale-125" />
             )}
           </button>
         </div>
 
         <ul className="flex-1 px-3">{children}</ul>
 
-        <div className="border-t flex p-3">
+        <div
+          className="flex items-center p-3 border-t"
+          style={{ borderTop: "1px solid var(--color-border)" }}
+        >
           <img
             src="https://ui-avatars.com/api/?background=c7d2fe&color=3730a3&bold=true"
             alt=""
             className="w-10 h-10 rounded-md"
           />
           <div
-            className={`
-              flex justify-between items-center
-              overflow-hidden transition-all ${expanded ? "w-52 ml-3" : "w-0"}
-          `}
+            className={`flex justify-between items-center overflow-hidden transition-all ${
+              expanded ? "w-52 ml-3" : "w-0"
+            }`}
           >
-            <div className="leading-4">
+            <div className="leading-4 text-primary-text">
               <h4 className="font-semibold">Linux-DEX</h4>
-              <span className="text-xs text-gray-600">linuxdex@linux.com</span>
+              <span
+                className="text-xs"
+                style={{ color: "var(--color-secondary-text)" }}
+              >
+                linuxdex@linux.com
+              </span>
             </div>
-            <div>
-              <ThemeSwitch />
-            </div>
+            <ThemeSwitch />
           </div>
         </div>
       </nav>
