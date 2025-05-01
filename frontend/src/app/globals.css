@@ -33,13 +33,17 @@
   background-color: var(--color-accent);
 }
 
-.bg-accent-hover:hover {
+.bg-accent-hover {
   background-color: var(--color-accent-hover);
 }
 
+/* .bg-accent-hover:hover {
+  background-color: var(--color-accent-hover);
+} */
+
 /* Text Colors */
 .text-primary {
-  color: var(--color-primary-text);
+  color: var(--color-primary-text) !important;
 }
 
 .text-secondary {

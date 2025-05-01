@@ -30,14 +30,8 @@ export default function SidebarItem({
         relative flex items-center py-2 px-3 my-1
         font-medium rounded-md cursor-pointer
         transition-colors group
-        ${
-          active ? "bg-accent/10 text-accent" : "hover:bg-accent/5 text-primary"
-        }
+        ${active ? "bg-accent text-white" : "hover:bg-accent/5 text-primary"}
       `}
-      style={{
-        backgroundColor: active ? "var(--color-accent-hover)" : undefined,
-        color: active ? "var(--color-primary-text)" : undefined,
-      }}
     >
       <span>{icon}</span>
       <span
@@ -52,7 +46,6 @@ export default function SidebarItem({
           className={`absolute right-2 w-2 h-2 rounded-full bg-accent ${
             expanded ? "" : "top-2"
           }`}
-          style={{ backgroundColor: "var(--color-accent)" }}
         />
       )}
 
@@ -62,12 +55,8 @@ export default function SidebarItem({
             absolute left-full rounded-md px-2 py-1 ml-6
             text-sm invisible opacity-0 -translate-x-3
             group-hover:visible group-hover:opacity-100 group-hover:translate-x-0
+            bg-surfacr text-primary 
           `}
-          style={{
-            backgroundColor: "var(--color-surface)",
-            color: "var(--color-primary-text)",
-            boxShadow: "0px 0px 5px rgba(0,0,0,0.1)",
-          }}
         >
           {text}
         </div>

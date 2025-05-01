@@ -28,11 +28,7 @@ export default function ThemeSwitch() {
   return (
     <button
       onClick={() => setTheme(isLight ? "dark" : "light")}
-      className="p-2 rounded-full transition-all duration-300"
-      style={{
-        backgroundColor: "var(--color-accent)",
-        color: "#fff",
-      }}
+      className="p-2 rounded-full transition-all duration-300 bg-accent"
     >
       {isLight ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
     </button>
