@@ -1,28 +1,26 @@
-'use client'
-
+"use client";
 import React, { useState } from "react";
 
-const daysOfWeek: string[] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+interface CalendarProps {
+  onDateSelect: (date: string) => void;
+}
 
-const Calendar: React.FC = () => {
-  const today: Date = new Date();
-  const [currentDate, setCurrentDate] = useState<Date>(new Date());
+const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-  const year: number = currentDate.getFullYear();
-  const month: number = currentDate.getMonth();
+const Calendar: React.FC<CalendarProps> = ({ onDateSelect }) => {
+  const today = new Date();
+  const [currentDate, setCurrentDate] = useState(new Date());
 
-  const firstDay: number = new Date(year, month, 1).getDay();
-  const lastDate: number = new Date(year, month + 1, 0).getDate();
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
 
-  const prevMonth = (): void => {
-    setCurrentDate(new Date(year, month - 1, 1));
-  };
+  const firstDay = new Date(year, month, 1).getDay();
+  const lastDate = new Date(year, month + 1, 0).getDate();
 
-  const nextMonth = (): void => {
-    setCurrentDate(new Date(year, month + 1, 1));
-  };
+  const prevMonth = () => setCurrentDate(new Date(year, month - 1, 1));
+  const nextMonth = () => setCurrentDate(new Date(year, month + 1, 1));
 
-  const generateCalendar = (): React.ReactNode[] => {
+  const generateCalendar = () => {
     const days: React.ReactNode[] = [];
 
     for (let i = 0; i < firstDay; i++) {
@@ -34,26 +32,21 @@ const Calendar: React.FC = () => {
     }
 
     for (let date = 1; date <= lastDate; date++) {
-      const isToday: boolean =
+      const isToday =
         date === today.getDate() &&
         month === today.getMonth() &&
         year === today.getFullYear();
 
-      const handleClick = () => {
-        const clickedDate = new Date(year, month, date);
-        const formattedDate = `${year}-${String(month + 1).padStart(
-          2,
-          "0"
-        )}-${String(date).padStart(2, "0")}`;
-
-        console.log(formattedDate);
-      };
+      const formattedDate = `${year}-${String(month + 1).padStart(
+        2,
+        "0"
+      )}-${String(date).padStart(2, "0")}`;
 
       days.push(
         <div
           key={date}
-          onClick={handleClick}
-          className={`border p-2 text-center rounded ${
+          onClick={() => onDateSelect(formattedDate)}
+          className={`cursor-pointer border p-2 text-center rounded ${
             isToday ? "bg-blue-500 text-white font-bold" : ""
           }`}
         >
@@ -66,10 +59,10 @@ const Calendar: React.FC = () => {
   };
 
   return (
-    <div className="w-80 mx-auto mt-10">
-      <div className="flex justify-between items-center mb-4">
+    <div className="w-full">
+      <div className="flex justify-between items-center mb-2">
         <button onClick={prevMonth}>⟵</button>
-        <h2 className="text-lg font-semibold">
+        <h2 className="text-sm font-semibold">
           {currentDate.toLocaleString("default", {
             month: "long",
             year: "numeric",
@@ -77,14 +70,14 @@ const Calendar: React.FC = () => {
         </h2>
         <button onClick={nextMonth}>⟶</button>
       </div>
-      <div className="grid grid-cols-7 gap-1 mb-2">
-        {daysOfWeek.map((day: string) => (
-          <div key={day} className="font-bold text-center">
-            {day}
-          </div>
+      <div className="grid grid-cols-7 gap-1 mb-1 text-xs font-bold text-center">
+        {daysOfWeek.map((day) => (
+          <div key={day}>{day}</div>
         ))}
       </div>
-      <div className="grid grid-cols-7 gap-1">{generateCalendar()}</div>
+      <div className="grid grid-cols-7 gap-1 text-center text-sm">
+        {generateCalendar()}
+      </div>
     </div>
   );
 };
