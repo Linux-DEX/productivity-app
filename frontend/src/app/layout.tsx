@@ -15,9 +15,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-theme="light">
+    <html lang="en" suppressHydrationWarning>
       <body data-theme="light">
-        <ThemeProvider attribute="data-theme">
+        <ThemeProvider
+          attribute="data-theme"
+          defaultTheme="light"
+          enableSystem={false}
+        >
           <SidebarContextProvider>
             <div className="flex h-screen">
               <NavMenu />

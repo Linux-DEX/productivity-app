@@ -16,6 +16,18 @@ const CreateTodo: React.FC<CreateTodoProps> = ({ onClose }) => {
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [fromTime, setFromTime] = useState<string>("");
   const [toTime, setToTime] = useState<string>("");
+  const [taskTitle, setTaskTitle] = useState<string>("");
+  const [taskDesc, setTaskDesc] = useState<string>("");
+  const [taskGroup, setTaskGroup] = useState<string>("");
+
+  const print = () => {
+    console.log("Task Title:", taskTitle);
+    console.log("Task Desc", taskDesc);
+    console.log("Task group", taskGroup);
+    console.log("Selected Date:", selectedDate);
+    console.log("From Time:", fromTime);
+    console.log("To Time:", toTime);
+  };
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -41,6 +53,8 @@ const CreateTodo: React.FC<CreateTodoProps> = ({ onClose }) => {
           type="text"
           placeholder="Create new Task"
           className="w-full border p-2 rounded bg-muted text-primary"
+          value={taskTitle}
+          onChange={(e) => setTaskTitle(e.target.value)}
         />
 
         <div className="flex justify-between gap-2">
@@ -48,6 +62,7 @@ const CreateTodo: React.FC<CreateTodoProps> = ({ onClose }) => {
             <select
               className="w-full appearance-none p-2 pr-10 pl-4 rounded bg-accent text-primary outline-none"
               defaultValue=""
+              onChange={(e) => setTaskGroup(e.target.value)}
             >
               <option value="" disabled>
                 No List
@@ -132,6 +147,8 @@ const CreateTodo: React.FC<CreateTodoProps> = ({ onClose }) => {
             id="desc"
             placeholder="Add notes"
             className="w-full h-32 border p-2 rounded bg-muted text-primary"
+            value={taskDesc}
+            onChange={(e) => setTaskDesc(e.target.value)}
           />
         )}
 
@@ -161,7 +178,10 @@ const CreateTodo: React.FC<CreateTodoProps> = ({ onClose }) => {
           </div>
         </div>
         <div className="mt-3 flex justify-end">
-          <button className="bg-accent text-primary w-full px-6 py-2 rounded hover:bg-primary/90 transition">
+          <button
+            className="bg-accent text-primary w-full px-6 py-2 rounded hover:bg-primary/90 transition"
+            onClick={print}
+          >
             Create new task
           </button>
         </div>
