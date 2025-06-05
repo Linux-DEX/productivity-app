@@ -1,12 +1,29 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TodoItem from "@/components/todo/TodoItem";
 import { Plus } from "lucide-react";
 import CreateTodo from "@/components/todo/CreateTodo";
+import { getAllTodos } from "@/api/todo";
+import type { Todo } from "@/types/todo";
 
 const Page = () => {
   const [showPopup, setShowPopup] = useState(false);
+  const [todos, setTodos] = useState<Todo[]>([]);
+
+  useEffect(() => {
+    const fetchTodos = async () => {
+      try {
+        const data = await getAllTodos();
+        console.log("data -> ", data);
+        // setTodos(data);
+      } catch (error) {
+        console.error("Failed to fetch todos:", error);
+      }
+    };
+
+    fetchTodos();
+  }, []);
 
   return (
     <div className="grid h-screen max-w-5xl grid-rows-[auto_1fr_auto] bg-background mx-auto">
