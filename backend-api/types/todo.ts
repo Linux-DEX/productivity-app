@@ -5,4 +5,5 @@ export interface CreateTodoDTO {
   fromTime: string; 
   toTime: string; 
   priority: number; 
+  taskDesc?: string;
 }

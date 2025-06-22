@@ -3,6 +3,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import Calendar from "../calender/calender";
 import { CalendarDays, Clock, ChevronLeft } from "lucide-react";
+import { create } from "@/api/todo";
+import { CreateTodoParams } from "@/types/todo";
 
 interface CreateTodoProps {
   onClose: () => void;
@@ -13,20 +15,35 @@ const CreateTodo: React.FC<CreateTodoProps> = ({ onClose }) => {
   const [viewMode, setViewMode] = useState<"default" | "calendar" | "time">(
     "default"
   );
-  const [selectedDate, setSelectedDate] = useState<string>("");
-  const [fromTime, setFromTime] = useState<string>("");
-  const [toTime, setToTime] = useState<string>("");
-  const [taskTitle, setTaskTitle] = useState<string>("");
-  const [taskDesc, setTaskDesc] = useState<string>("");
-  const [taskGroup, setTaskGroup] = useState<string>("");
 
-  const print = () => {
-    console.log("Task Title:", taskTitle);
-    console.log("Task Desc", taskDesc);
-    console.log("Task group", taskGroup);
-    console.log("Selected Date:", selectedDate);
-    console.log("From Time:", fromTime);
-    console.log("To Time:", toTime);
+  const [createTask, setCreateTask] = useState<CreateTodoParams>({
+    task: "",
+    list: "",
+    date: "",
+    fromTime: "",
+    toTime: "",
+    priority: "",
+    taskDesc: "",
+  });
+
+  const handleInput = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
+    const { name, value } = e.target;
+    setCreateTask((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleCreateTask = async () => {
+    try {
+      console.log("Create Task:", createTask);
+      const response = await create(createTask);
+      console.log('Task created: ', response);
+      onClose();
+    } catch (error) {
+      console.log('Failed to create task:', error);
+    }
   };
 
   useEffect(() => {
@@ -51,18 +68,20 @@ const CreateTodo: React.FC<CreateTodoProps> = ({ onClose }) => {
       >
         <input
           type="text"
+          name="task"
           placeholder="Create new Task"
           className="w-full border p-2 rounded bg-muted text-primary"
-          value={taskTitle}
-          onChange={(e) => setTaskTitle(e.target.value)}
+          value={createTask.task}
+          onChange={handleInput}
         />
 
         <div className="flex justify-between gap-2">
           <div className="relative flex-1">
             <select
+              name="list"
               className="w-full appearance-none p-2 pr-10 pl-4 rounded bg-accent text-primary outline-none"
-              defaultValue=""
-              onChange={(e) => setTaskGroup(e.target.value)}
+              value={createTask.list}
+              onChange={handleInput}
             >
               <option value="" disabled>
                 No List
@@ -71,7 +90,6 @@ const CreateTodo: React.FC<CreateTodoProps> = ({ onClose }) => {
               <option value="Personal">Personal</option>
               <option value="List of book">List of book</option>
             </select>
-
             <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-primary">
               <svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
                 <path
@@ -106,13 +124,13 @@ const CreateTodo: React.FC<CreateTodoProps> = ({ onClose }) => {
           <div>
             <Calendar
               onDateSelect={(date) => {
-                setSelectedDate(date);
+                setCreateTask((prev) => ({ ...prev, date }));
                 setViewMode("default");
               }}
             />
-            {selectedDate && (
+            {createTask.date && (
               <p className="text-xs mt-1 text-primary">
-                Selected: <strong>{selectedDate}</strong>
+                Selected: <strong>{createTask.date}</strong>
               </p>
             )}
           </div>
@@ -124,8 +142,9 @@ const CreateTodo: React.FC<CreateTodoProps> = ({ onClose }) => {
               <label className="text-sm text-gray-600">From</label>
               <input
                 type="time"
-                value={fromTime}
-                onChange={(e) => setFromTime(e.target.value)}
+                name="fromTime"
+                value={createTask.fromTime}
+                onChange={handleInput}
                 className="w-full border p-2 rounded bg-muted text-primary"
               />
             </div>
@@ -133,8 +152,9 @@ const CreateTodo: React.FC<CreateTodoProps> = ({ onClose }) => {
               <label className="text-sm text-gray-600">To</label>
               <input
                 type="time"
-                value={toTime}
-                onChange={(e) => setToTime(e.target.value)}
+                name="toTime"
+                value={createTask.toTime}
+                onChange={handleInput}
                 className="w-full border p-2 rounded bg-muted text-primary"
               />
             </div>
@@ -143,19 +163,20 @@ const CreateTodo: React.FC<CreateTodoProps> = ({ onClose }) => {
 
         {viewMode === "default" && (
           <textarea
-            name="desc"
-            id="desc"
+            name="taskDesc"
             placeholder="Add notes"
             className="w-full h-32 border p-2 rounded bg-muted text-primary"
-            value={taskDesc}
-            onChange={(e) => setTaskDesc(e.target.value)}
+            value={createTask.taskDesc}
+            onChange={handleInput}
           />
         )}
 
         <div className="relative flex-1">
           <select
+            name="priority"
             className="w-full appearance-none p-2 pr-10 pl-4 rounded bg-accent text-primary outline-none"
-            defaultValue=""
+            value={createTask.priority}
+            onChange={handleInput}
           >
             <option value="" disabled>
               Add to priority
@@ -177,10 +198,11 @@ const CreateTodo: React.FC<CreateTodoProps> = ({ onClose }) => {
             </svg>
           </div>
         </div>
+
         <div className="mt-3 flex justify-end">
           <button
             className="bg-accent text-primary w-full px-6 py-2 rounded hover:bg-primary/90 transition"
-            onClick={print}
+            onClick={handleCreateTask}
           >
             Create new task
           </button>

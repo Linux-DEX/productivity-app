@@ -5,12 +5,12 @@ export const todoService = {
   async createTodo(todo: CreateTodoDTO) {
     const db = await getDb();
 
-    const { task, list, date, fromTime, toTime, priority } = todo;
+    const { task, list, date, fromTime, toTime, priority, taskDesc } = todo;
 
     const [result] = await db.execute(
-      `INSERT INTO todos (task, list, date, from_time, to_time, priority)
-       VALUES (?, ?, ?, ?, ?, ?)`,
-      [task, list, date, fromTime, toTime, priority]
+      `INSERT INTO todos (task, list, date, from_time, to_time, priority, description)
+       VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      [task, list, date, fromTime, toTime, priority, taskDesc]
     );
 
     return {

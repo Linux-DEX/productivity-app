@@ -10,15 +10,19 @@ import type { Todo } from "@/types/todo";
 const Page = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [todos, setTodos] = useState<Todo[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchTodos = async () => {
       try {
         const data = await getAllTodos();
-        console.log("data -> ", data);
-        // setTodos(data);
-      } catch (error) {
-        console.error("Failed to fetch todos:", error);
+        setTodos(data);
+      } catch (err) {
+        setError("Failed to fetch todo");
+        console.error(err);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -60,15 +64,38 @@ const Page = () => {
         </div>
       </div>
 
-      <div className="h-full">
-        <TodoItem name="Team Sync" fromTime="9:00 AM" toTime="10:00 AM" />
-        <TodoItem
-          name="Design Review"
-          fromTime="11:00 AM"
-          toTime="11:30 AM"
-          checked
-        />
+      <div className="h-full overflow-auto px-8">
+        {loading ? (
+          <div className="flex justify-center items-center h-full">
+            <div className="animate-spin rounded-full h-8 w-8 border-4 border-accent border-t-transparent"></div>
+          </div>
+        ) : todos.length === 0 ? (
+          <p className="text-center text-muted-foreground mt-12">No todos found.</p>
+        ) : (
+          todos.map((todo) => (
+            <TodoItem
+              key={todo.id}
+              name={todo.task}
+              fromTime={todo.from_time}
+              toTime={todo.to_time}
+            />
+          ))
+        )}
       </div>
+
+
+      {/* <div className="h-full"> */}
+      {/*   { */}
+      {/*     todos.map((todo, index) => ( */}
+      {/*       <TodoItem */}
+      {/*         key={todo.id} */}
+      {/*         name={todo.task} */}
+      {/*         fromTime={todo.from_time} */}
+      {/*         toTime={todo.to_time} */}
+      {/*       /> */}
+      {/*     )) */}
+      {/*   } */}
+      {/* </div> */}
 
       <div className="h-20 flex items-center justify-end pr-8 relative">
         <div className="relative group">

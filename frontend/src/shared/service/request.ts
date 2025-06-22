@@ -5,7 +5,6 @@ const defaultOptions: AxiosRequestConfig = {
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: true,
 };
 
 const request = axios.create(defaultOptions);

@@ -5,6 +5,7 @@ export interface CreateTodoParams {
   fromTime: string;
   toTime: string;
   priority: string;
+  taskDesc?: string;
 }
 
 export interface Todo {
@@ -12,7 +13,7 @@ export interface Todo {
   task: string;
   list: string;
   date: string;
-  fromTime: string;
-  toTime: string;
+  from_time: string;
+  to_time: string;
   priority: string;
 }

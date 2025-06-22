@@ -5,10 +5,10 @@ import { CreateTodoDTO } from "../types/todo";
 export const todoController = {
   async create(req: Request, res: Response) {
     try {
-      const { task, list, date, fromTime, toTime, priority } =
+      const { task, list, date, fromTime, toTime, priority, taskDesc } =
         req.body as CreateTodoDTO;
 
-      if (!task || !list || !date || !fromTime || !toTime || !priority) {
+      if (!task) {
         return res.status(400).json({ message: "Missing required fields." });
       }
 
@@ -25,6 +25,7 @@ export const todoController = {
         fromTime,
         toTime,
         priority,
+        taskDesc,
       });
       res.status(201).json(todo);
     } catch (err) {
