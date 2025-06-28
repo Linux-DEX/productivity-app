@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import TodoItem from "@/components/todo/TodoItem";
 import { Plus } from "lucide-react";
 import CreateTodo from "@/components/todo/CreateTodo";
@@ -13,21 +13,22 @@ const Page = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchTodos = async () => {
-      try {
-        const data = await getAllTodos();
-        setTodos(data);
-      } catch (err) {
-        setError("Failed to fetch todo");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTodos();
+  const fetchTodos = useCallback(async () => {
+    try {
+      setLoading(true);
+      const data = await getAllTodos();
+      setTodos(data);
+    } catch (err) {
+      setError("Failed to fetch todo");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchTodos();
+  }, [fetchTodos]);
 
   return (
     <div className="grid h-screen max-w-5xl grid-rows-[auto_1fr_auto] bg-background mx-auto">
@@ -70,7 +71,9 @@ const Page = () => {
             <div className="animate-spin rounded-full h-8 w-8 border-4 border-accent border-t-transparent"></div>
           </div>
         ) : todos.length === 0 ? (
-          <p className="text-center text-muted-foreground mt-12">No todos found.</p>
+          <p className="text-center text-muted-foreground mt-12">
+            No todos found.
+          </p>
         ) : (
           todos.map((todo) => (
             <TodoItem
@@ -82,21 +85,6 @@ const Page = () => {
           ))
         )}
       </div>
-
-
-      {/* <div className="h-full"> */}
-      {/*   { */}
-      {/*     todos.map((todo, index) => ( */}
-      {/*       <TodoItem */}
-      {/*         key={todo.id} */}
-      {/*         name={todo.task} */}
-      {/*         fromTime={todo.from_time} */}
-      {/*         toTime={todo.to_time} */}
-      {/*       /> */}
-      {/*     )) */}
-      {/*   } */}
-      {/* </div> */}
-
       <div className="h-20 flex items-center justify-end pr-8 relative">
         <div className="relative group">
           <button
@@ -112,7 +100,14 @@ const Page = () => {
         </div>
       </div>
 
-      {showPopup && <CreateTodo onClose={() => setShowPopup(false)} />}
+      {showPopup && (
+        <CreateTodo
+          onClose={() => {
+            setShowPopup(false);
+            fetchTodos();
+          }}
+        />
+      )}
     </div>
   );
 };
